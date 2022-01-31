@@ -9,19 +9,19 @@ Player::Player() {
 	if (map.stage == 0) {
 		transform.posX = 288;
 		transform.posY = 864;
-	}
+		}
 	else if (map.stage == 1) {
 		transform.posX = 352;
 		transform.posY = 864;
-	}
+		}
 	else if (map.stage == 2) {
 		transform.posX = 32;
 		transform.posY = 128;
-	}
+		}
 	else if (map.stage == 3) {
 		transform.posX = 1280;
 		transform.posY = 672;
-	}
+		}
 
 	transform.r = 32;
 	Pic = LoadGraph("player.png");
@@ -61,11 +61,11 @@ Player::Player() {
 	CentralX = 0;
 
 	anime = new Animation;
-}
+	}
 
 void Player::Reset() {
 	*this = {};
-}
+	}
 
 //四隅と四隅の中間のマップチップ座標の取得
 void Player::MapchipInfo() {
@@ -92,7 +92,7 @@ void Player::MapchipTemporaryInfo() {
 	leftTopX = (transform.posX - hitSide - speedTmp) / 32;
 	leftUnderX = (transform.posX - hitSide - speedTmp) / 32;
 	leftCentralX = (transform.posX - hitSide - 1 - speedTmp) / 32;
-}
+	}
 
 //Move関数	(コントローラー)
 void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
@@ -103,11 +103,11 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 	if (isGliding == false) {
 		if (g >= 60) {
 			g = 60;
-		}
+			}
 		g += 2;
 		transform.posY += g;
 		isGliderColliding = false;
-	}
+		}
 
 	if (isMove == 1) {
 
@@ -119,12 +119,12 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 			if (pad.RightTrigger > 150) {
 				dashSpeed = 8;
 				speedTmp = dashSpeed + 3;
-			}
+				}
 			//通常
 			else {
 				walkSpeed = 6;
 				speedTmp = walkSpeed + 3;
-			}
+				}
 			MapchipTemporaryInfo();
 			//マップチップ当たり判定
 			for (int color = 1; color < 8; color++) {
@@ -144,11 +144,11 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 						else {
 							walkSpeed = 0;
 							dashSpeed = 0;
+							}
 						}
 					}
 				}
 			}
-		}
 		//左移動
 		if (pad.ThumbLX < -9000 && isGliding == false) {
 			idleTimer = 0;
@@ -157,12 +157,12 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 			if (pad.RightTrigger > 150) {
 				dashSpeed = -8;
 				speedTmp = -dashSpeed;
-			}
+				}
 			//通常
 			else {
 				walkSpeed = -6;
 				speedTmp = -walkSpeed;
-			}
+				}
 
 			MapchipTemporaryInfo();
 			//マップチップ当たり判定
@@ -175,20 +175,20 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 						if (transform.posX - hitSide < leftTopX * 32) {
 							if (pad.RightTrigger > 150) {
 								dashSpeed = -(leftTopX * 32) - (transform.posX + hitSide);
-							}
+								}
 							else {
 								walkSpeed = -(leftTopX * 32) - (transform.posX + hitSide);
+								}
 							}
-						}
 						else {
 							walkSpeed = 0;
 							dashSpeed = 0;
 							speedTmp = 6;
+							}
 						}
 					}
 				}
 			}
-		}
 
 		//ジャンプ
 		if (pad.Buttons[XINPUT_BUTTON_A] == 1 && padOld.Buttons[XINPUT_BUTTON_A] == 0 && isJump == 0) {
@@ -222,25 +222,25 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 
 			if (isGliding == true) {
 				isJump = 0;
+				}
 			}
-		}
 
 		if (isJump == 1 && isGliding == false) {
 			transform.posY += jumpSpeed;
 			idleTimer = 0;
+			}
 		}
-	}
 
 	if (dashSpeed == 0 && walkSpeed == 0) {
 		state = IDLE;
 		idleTimer++;
-	}
+		}
 	else if (walkSpeed == 6 || walkSpeed == -6) {
 		state = WALK;
-	}
+		}
 	else if (dashSpeed == 8 || dashSpeed == -8) {
 		state = DASH;
-	}
+		}
 
 	//グライダー
 	if (pad.LeftTrigger > 150 && g >= 25) {
@@ -273,13 +273,13 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 				walkSpeed = 2;
 				dashSpeed = 2;
 				speedTmp = 4;
-			}
+				}
 			if (pad.ThumbLX > 30000) {
 				walkSpeed = 4;
 				dashSpeed = 4;
 				speedTmp = 8;
+				}
 			}
-		}
 
 		if (direction == LEFT) {
 			walkSpeed = -1;
@@ -313,22 +313,22 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 					walkSpeed = 0;
 					dashSpeed = 0;
 					isGliderColliding = true;
+					}
 				}
 			}
-		}
 
 		if (isGliderColliding == true) {
 			isGliding = false;
 			hasGlided = true;
 			g = 0;
-		}
+			}
 
 		transform.posY += glidingG;
-	}
+		}
 	else if (pad.LeftTrigger < 150 && g == 25) {
 		isGliding = false;
 		g = 0;
-	}
+		}
 
 	for (int y = 0; y < 30; y++) {
 		for (int x = 0; x < 44; x++) {
@@ -341,24 +341,24 @@ void Player::Move(XINPUT_STATE pad, XINPUT_STATE padOld) {
 							hasGlided = false;
 							isJump = 0;
 							g = 0;
+							}
 						}
-					}
 					if (Colision(transform, map, x, y, hitSide) == color) {
 						//天井
 						if (transform.posY - transform.r > 32 + (32 * y) - (21 + g)) {
 							transform.posY += 32 + (32 * y) - (transform.posY - transform.r);
 							jumpSpeed = 1;
 							g = 0;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
 	transform.posX += walkSpeed;
 	transform.posX += dashSpeed;
-}
+	}
 
 //Draw関数
 void Player::Draw() {
@@ -370,7 +370,7 @@ void Player::Draw() {
 		transform.posX + transform.r, transform.posY + transform.r,
 		GetColor(255, 0, 0), false);*/
 
-	//移動してないとき
+		//移動してないとき
 	if (state == IDLE) {
 
 		anime->animation(anime->playerFrame, anime->playerTimer, 4, 7);
@@ -382,31 +382,31 @@ void Player::Draw() {
 					transform.posX - transform.r,
 					transform.posY - transform.r - 8,
 					idlePic[anime->playerTimer], true);
-			}
+				}
 			//左
 			else if (direction == LEFT && isGliding == false) {
 				DrawTurnGraph(
 					transform.posX - transform.r - 8,
 					transform.posY - transform.r - 8,
 					idlePic[anime->playerTimer], true);
+				}
 			}
-		}
 		else {	//静止画
 			if (direction == RIGHT && isGliding == false) {
 				DrawGraph(
 					transform.posX - transform.r,
 					transform.posY - transform.r - 8,
 					idlePic[0], true);
-			}
+				}
 			else if (direction == LEFT && isGliding == false) {
 				DrawTurnGraph(
 					transform.posX - transform.r - 8,
 					transform.posY - transform.r - 8,
 					idlePic[0], true);
+				}
 			}
+
 		}
-		
-	}
 	//移動してるとき
 	if (state == WALK) {
 		anime->animation(anime->playerFrame, anime->playerTimer, 4, 7);
@@ -416,14 +416,14 @@ void Player::Draw() {
 				transform.posX - transform.r,
 				transform.posY - transform.r - 8,
 				idlePic[anime->playerTimer], true);
-		}
+			}
 		else if (direction == LEFT && isGliding == false) {
 			DrawTurnGraph(
 				transform.posX - transform.r - 8,
 				transform.posY - transform.r - 8,
 				idlePic[anime->playerTimer], true);
+			}
 		}
-	}
 	//ダッシュで移動してるとき
 	if (state == DASH) {
 		anime->animation(anime->playerFrame, anime->playerTimer, 4, 7);
@@ -433,14 +433,14 @@ void Player::Draw() {
 				transform.posX - transform.r,
 				transform.posY - transform.r - 8,
 				idlePic[anime->playerTimer], true);
-		}
+			}
 		else if (direction == LEFT && isGliding == false) {
 			DrawTurnGraph(
 				transform.posX - transform.r - 8,
 				transform.posY - transform.r - 8,
 				idlePic[anime->playerTimer], true);
+			}
 		}
-	}
 
 	//グライダー描画
 	if (isGliding == true) {
@@ -470,4 +470,4 @@ void Player::Draw() {
 			transform.posX + transform.r, transform.posY + transform.r,
 			GetColor(125, 125, 125), true);
 	}*/
-}
+	}

@@ -184,14 +184,7 @@ void UI::ButtonDraw(XINPUT_STATE pad, XINPUT_STATE padOld,TransForm player) {
 		direction = LEFT;
 	}
 
-	if (pad.Buttons[XINPUT_BUTTON_B] == 1 && padOld.Buttons[XINPUT_BUTTON_B] == 0) {
-		if (isLaserMode == 0) {
-			isLaserMode = 1;
-		}
-		else {
-			isLaserMode = 0;
-		}
-	}
+	
 
 	if (pad.Buttons[XINPUT_BUTTON_B] == 1 && padOld.Buttons[XINPUT_BUTTON_B] == 0 ||
 		pad.Buttons[XINPUT_BUTTON_B] == 1 && padOld.Buttons[XINPUT_BUTTON_B] == 1) {
@@ -204,7 +197,70 @@ void UI::ButtonDraw(XINPUT_STATE pad, XINPUT_STATE padOld,TransForm player) {
 	anime->animation(anime->rStickFrame, anime->rStickTimer, 7, 8);
 	//描画処理
 	//方向によって変化
-	if (direction == RIGHT) {
+
+	for (int i = 0; i < 3; i++) {
+
+		if (Colision(player, pointX[i], pointY[i])) {
+			if (pad.Buttons[XINPUT_BUTTON_B] == 1 && padOld.Buttons[XINPUT_BUTTON_B] == 0) {
+				if (isLaserMode == 0) {
+					isLaserMode = 1;
+				}
+				else {
+					isLaserMode = 0;
+				}
+			}
+		}
+
+		if (direction == RIGHT) {
+			//Bボタン押してる時
+			if (isPush == 1 && Colision(player, pointX[i], pointY[i])) {
+
+				DrawGraph(
+					player.posX + player.r,
+					player.posY - player.r - 16,
+					bButtanPic[1], true);
+			}
+			//Bボタン押してない時
+			else if (Colision(player, pointX[i], pointY[i])) {
+				DrawGraph(
+					player.posX + player.r,
+					player.posY - player.r - 16,
+					bButtanPic[0], true);
+
+				if (isLaserMode == true) {
+					DrawGraph(
+						player.posX - player.r * 3,
+						player.posY - player.r - 32,
+						rStickPic[anime->rStickTimer], true);
+				}
+			}
+		}
+		else if (direction == LEFT) {
+			//Bボタン押してる時
+			if (isPush == 1 && Colision(player, pointX[i], pointY[i])) {
+
+				DrawGraph(
+					player.posX - player.r * 2,
+					player.posY - player.r - 16,
+					bButtanPic[1], true);
+			}
+			//Bボタン押してない時
+			else if (Colision(player, pointX[i], pointY[i])) {
+				DrawGraph(
+					player.posX - player.r * 2,
+					player.posY - player.r - 16,
+					bButtanPic[0], true);
+
+				if (isLaserMode == true) {
+					DrawGraph(
+						player.posX + player.r,
+						player.posY - player.r - 32,
+						rStickPic[anime->rStickTimer], true);
+				}
+			}
+		}
+	}
+	/*if (direction == RIGHT) {
 		for (int i = 0; i < 3; i++) {
 			if (isPush == 1 && Colision(player, pointX[i], pointY[i])) {
 
@@ -253,7 +309,7 @@ void UI::ButtonDraw(XINPUT_STATE pad, XINPUT_STATE padOld,TransForm player) {
 				}
 			}
 		}	
-	}
+	}*/
 	
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "muki %d", direction);
 }

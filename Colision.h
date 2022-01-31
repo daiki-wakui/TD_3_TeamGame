@@ -9,8 +9,7 @@ int Colision(TransForm transform, int x, int y);
 bool LineLine(float laserStartX, float laserStartY, float* laserEndX, float* laserEndY,
 	float startX, float startY, float endX, float endY);
 
-bool LineBox(float laserStartX, float laserStartY, float* laserEndX, float* laserEndY,
-	float top, float bottom, float left, float right);
+bool LineBox(float laserStartX, float laserStartY, float* laserEndX, float* laserEndY, MAP map, int x, int y);
 
 bool LineCrystal(float laserStartX, float laserStartY, float* laserEndX, float* laserEndY,
 	float top, float bottom, float middle, float left, float right, float middleX);

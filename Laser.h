@@ -4,6 +4,29 @@
 #include"Player.h"
 #include "UI.h"
 
+
+class Particle {
+public:
+	//------------ŠÖ”éŒ¾---------------
+	//‰Šú‰»
+	Particle();
+	//”­¶
+	int Spawn(int posX, int posY);
+	//ˆÚ“®
+	void Move(int posX, int posY, int isMove);
+	//•`‰æ
+	void Draw();
+
+	//------------•Ï”éŒ¾----------------
+	int isDraw;
+	float startX, startY, endX, endY;
+	float lengthX, lengthStartY, lengthEndY;
+	float timer, limit;
+	float timePerLimt;
+	int color[5];
+	int colorRand;
+	};
+
 class Laser {
 public:
 	Laser(MAP map, int blockColor);
@@ -16,6 +39,7 @@ public:
 	void Draw();
 
 	//•Ï”éŒ¾
+	int max;
 	int pic[3];
 	int isDraw[10];
 	float startX[10], startY[10];
@@ -27,4 +51,9 @@ public:
 
 	int isHitX[10], isHitY[10];
 	int isOldHitX[10], isOldHitY[10];
-};
+
+
+	Particle* particle[100];
+	int spawnCount, spawnMax;
+	int spawnTimer, spawnLimt;
+	};

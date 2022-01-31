@@ -36,23 +36,62 @@ bool LineLine(float laserStartX, float laserStartY, float* laserEndX, float* las
 	}
 
 //レーザーとマップチップ
-bool LineBox(float laserStartX, float laserStartY, float* laserEndX, float* laserEndY, float top, float bottom, float left, float right) {
+bool LineBox(float laserStartX, float laserStartY, float* laserEndX, float* laserEndY, MAP map, int x, int y) {
+	float top = y * 32, bottom = y * 32 + 32;
+	float left = x * 32, right = x * 32 + 32;
 	int isHit = 0;
 	//上
-	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top)) {
+	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left + 8, top + 8, right - 8, top + 8)) {
 		isHit = 1;
 		}
 	//下
-	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, bottom)) {
+	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left + 8, bottom - 8, right - 8, bottom - 8)) {
 		isHit = 1;
 		}
 	//左
-	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left, bottom)) {
+	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left + 8, top + 8, left + 8, bottom - 8)) {
 		isHit = 1;
 		}
 	//右
-	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right, bottom)) {
+	if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right - 8, top + 8, right - 8, bottom - 8)) {
 		isHit = 1;
+		}
+
+	//横
+	if (map.isDraw[map.CHIP[map.stage][y][x + 1]] == 1) {
+		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right - 8, top + 16, right + 8, top + 16)) {
+			isHit = 1;
+			}
+		}
+	//縦
+	if (map.isDraw[map.CHIP[map.stage][y + 1][x]] == 1) {
+		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left + 16, bottom - 8, left + 16, bottom + 8)) {
+			isHit = 1;
+			}
+		}
+	//右上
+	if (map.isDraw[map.CHIP[map.stage][y][x + 1]] == 0 && map.isDraw[map.CHIP[map.stage][y - 1][x]] == 0) {
+		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right - 8, top + 8)) {
+			isHit = 1;
+			}
+		}
+	//右下
+	if (map.isDraw[map.CHIP[map.stage][y][x + 1]] == 0 && map.isDraw[map.CHIP[map.stage][y + 1][x]] == 0) {
+		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, bottom, right - 8, bottom - 8)) {
+			isHit = 1;
+			}
+		}
+	//左下
+	if (map.isDraw[map.CHIP[map.stage][y][x - 1]] == 0 && map.isDraw[map.CHIP[map.stage][y + 1][x]] == 0) {
+		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, left + 8, bottom - 8)) {
+			isHit = 1;
+			}
+		}
+	//左上
+	if (map.isDraw[map.CHIP[map.stage][y][x - 1]] == 0 && map.isDraw[map.CHIP[map.stage][y - 1][x]] == 0) {
+		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left + 8, top + 8)) {
+			isHit = 1;
+			}
 		}
 
 	return isHit;
@@ -83,21 +122,21 @@ int LineMirror(float laserStartX, float laserStartY, float* laserEndX, float* la
 		//上
 		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top)) {
 			isHit = 1;
-		}
+			}
 		//下
 		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, bottom)) {
 			isHit = 1;
-		}
+			}
 		//左
 		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left, bottom)) {
 			isHit = 1;
-		}
+			}
 		//右
 		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right, bottom)) {
 			isHit = 1;
-		}
+			}
 		return isHit;
-	}
+		}
 	if (map.CHIP[map.stage][y][x] == 12) {
 		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top);
 		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left, bottom);

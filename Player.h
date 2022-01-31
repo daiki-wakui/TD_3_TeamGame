@@ -71,11 +71,11 @@ public:
 	enum Direction {
 		RIGHT,
 		LEFT
-	};
+		};
 
 	enum STATE {
 		IDLE,
 		WALK,
 		DASH
+		};
 	};
-};
