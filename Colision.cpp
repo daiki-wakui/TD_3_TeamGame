@@ -94,6 +94,7 @@ bool LineBox(float laserStartX, float laserStartY, float* laserEndX, float* lase
 			}
 		}
 
+
 	return isHit;
 	}
 
@@ -117,8 +118,8 @@ bool LineCrystal(float laserStartX, float laserStartY, float* laserEndX, float* 
 int LineMirror(float laserStartX, float laserStartY, float* laserEndX, float* laserEndY, MAP map, int x, int y) {
 	float top = y * 32, bottom = y * 32 + 32;
 	float left = x * 32, right = x * 32 + 32;
+	int isHit = 0;
 	if (map.CHIP[map.stage][y][x] == 11) {
-		int isHit = 0;
 		//è„
 		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top)) {
 			isHit = 1;
@@ -135,39 +136,38 @@ int LineMirror(float laserStartX, float laserStartY, float* laserEndX, float* la
 		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right, bottom)) {
 			isHit = 1;
 			}
-		return isHit;
 		}
 	if (map.CHIP[map.stage][y][x] == 12) {
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top);
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left, bottom);
-		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, top) == 1) {
-			return 1;
+		if (
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left, bottom) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, top) == 1) {
+			isHit = 1;
 			}
-		return 2;
 		}
 	if (map.CHIP[map.stage][y][x] == 13) {
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top);
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right, bottom);
-		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, bottom, left, top) == 1) {
-			return 1;
+		if (
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, right, top) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right, bottom) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, bottom, left, top) == 1) {
+			isHit = 1;
 			}
-		return 2;
 		}
 	if (map.CHIP[map.stage][y][x] == 14) {
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, bottom);
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right, bottom);
-		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, top) == 1) {
-			return 1;
+		if (
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, bottom) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, top, right, bottom) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, top) == 1) {
+			isHit = 1;
 			}
-		return 2;
 		}
 	if (map.CHIP[map.stage][y][x] == 15) {
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, bottom);
-		LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left, bottom);
-		if (LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, bottom, left, top) == 1) {
-			return 1;
+		if (
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, bottom, right, bottom) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, left, top, left, bottom) == 1 ||
+			LineLine(laserStartX, laserStartY, laserEndX, laserEndY, right, bottom, left, top) == 1) {
+			isHit = 1;
 			}
-		return 2;
 		}
-	return 0;
+	return isHit;
 	}

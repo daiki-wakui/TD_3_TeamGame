@@ -132,6 +132,8 @@
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="SE.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="UL.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -140,6 +142,8 @@
     <ClInclude Include="Colision.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="SE.h" />
+    <ClInclude Include="Tutorial.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sturct.h" />

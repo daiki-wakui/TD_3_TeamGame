@@ -14,4 +14,4 @@ typedef struct TransForm {
 	int posX;
 	int posY;
 	int r;
-};
+	};

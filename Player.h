@@ -28,6 +28,8 @@ public:
 	//‰æ‘œ
 	int Pic;
 	int idlePic[7];
+	int walkPic[6];
+	int dashPic[6];
 
 	int glidePic[2];
 	//ó‘Ô

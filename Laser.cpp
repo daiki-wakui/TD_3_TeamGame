@@ -98,7 +98,7 @@ void Particle::Draw() {
 //--------------------------------------------------------------------------------------------
 
 Laser::Laser(MAP map, int blockColor) {
-	LoadDivGraph("Laser.png", 3, 3, 1, 96, 64, pic, true);
+	LoadDivGraph("Resources/Laser.png", 3, 3, 1, 96, 64, pic, true);
 
 	for (int y = 0; y < 30; y++) {
 		for (int x = 0; x < 44; x++) {
@@ -126,16 +126,12 @@ Laser::Laser(MAP map, int blockColor) {
 	thetaOld = 0;
 	angle[0] = 1.56;
 	isAngle = 0;
-	for (int i = 1; i < 10; i++) {
+	for (int i = 1; i < 20; i++) {
 		isDraw[i] = 0;
 		angle[i] = 0;
-		isHitX[i] = 0;
-		isHitY[i] = 0;
-		isOldHitX[i] = 0;
-		isOldHitY[i] = 0;
 		}
 	isDraw[0] = 1;
-	max = 10;
+	max = 20;
 	}
 
 
@@ -151,8 +147,14 @@ void Laser::Angle(XINPUT_STATE pad, XINPUT_STATE padOld, TransForm player) {//開
 	else if (isAngle == 1) {
 		thetaOld = theta;
 		//スティック角度取得
-		if (pad.ThumbRX > 16000 || pad.ThumbRX < -16000 || pad.ThumbRY > 16000 || pad.ThumbRY < -16000) {
-			theta = atan2(pad.ThumbRY, pad.ThumbRX);
+		double dead = atan2(pad.ThumbRY, pad.ThumbRX);
+		int deadX = cos(dead) * 31000;
+		int deadY = sin(dead) * -31000;
+
+		if (abs(pad.ThumbRX) > abs(deadX)) {
+			if (abs(pad.ThumbRY) > abs(deadY)) {
+				theta = atan2(pad.ThumbRY, pad.ThumbRX);
+				}
 			}
 
 		//左回転
@@ -166,7 +168,7 @@ void Laser::Angle(XINPUT_STATE pad, XINPUT_STATE padOld, TransForm player) {//開
 				angle[0] += 0.02;
 				}
 			else {
-				angle[0] += 0.005;
+				angle[0] += 0.001;
 				}
 			}
 		//右回転
@@ -177,8 +179,8 @@ void Laser::Angle(XINPUT_STATE pad, XINPUT_STATE padOld, TransForm player) {//開
 			else if (thetaOld - theta > 0.1) {
 				angle[0] -= 0.02;
 				}
-			else if (thetaOld - theta > 0) {
-				angle[0] -= 0.005;
+			else {
+				angle[0] -= 0.001;
 				}
 			}
 
@@ -241,25 +243,89 @@ void Laser::Angle(XINPUT_STATE pad, XINPUT_STATE padOld, TransForm player) {//開
 									angle[i + 1] = atan2(32, 0) + (atan2(32, 0) - angle[i]);
 									}
 								}
+
 							if (map.CHIP[map.stage][y][x] == 12) {
-								startX[i + 1] = endX[i] + 1;
-								startY[i + 1] = endY[i] + 1;
-								angle[i + 1] = atan2(32, 32) + (atan2(32, 32) - angle[i]);
+								//上
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y, 32 * x + 32, 32 * y)) {
+									startX[i + 1] = endX[i];
+									startY[i + 1] = endY[i] - 1;
+									angle[i + 1] = atan2(0, 32) + (atan2(0, 32) - angle[i]);
+									}
+								//左
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y, 32 * x, 32 * y + 32)) {
+									startX[i + 1] = endX[i] - 1;
+									startY[i + 1] = endY[i];
+									angle[i + 1] = atan2(32, 0) + (atan2(32, 0) - angle[i]);
+									}
+								//斜め
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y + 32, 32 * x + 32, 32 * y)) {
+									startX[i + 1] = endX[i] + 1;
+									startY[i + 1] = endY[i] + 1;
+									angle[i + 1] = atan2(32, 32) + (atan2(32, 32) - angle[i]);
+									}
 								}
+
 							else if (map.CHIP[map.stage][y][x] == 13) {
-								startX[i + 1] = endX[i] - 1;
-								startY[i + 1] = endY[i] + 1;
-								angle[i + 1] = atan2(-32, 32) + (atan2(-32, 32) - angle[i]);
+								//上
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y, 32 * x + 32, 32 * y)) {
+									startX[i + 1] = endX[i];
+									startY[i + 1] = endY[i] - 1;
+									angle[i + 1] = atan2(0, 32) + (atan2(0, 32) - angle[i]);
+									}
+								//右
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x + 32, 32 * y, 32 * x + 32, 32 * y + 32)) {
+									startX[i + 1] = endX[i] + 1;
+									startY[i + 1] = endY[i];
+									angle[i + 1] = atan2(32, 0) + (atan2(32, 0) - angle[i]);
+									}
+								//斜め
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x + 32, 32 * y + 32, 32 * x, 32 * y)) {
+									startX[i + 1] = endX[i] - 1;
+									startY[i + 1] = endY[i] + 1;
+									angle[i + 1] = atan2(-32, 32) + (atan2(-32, 32) - angle[i]);
+									}
 								}
+
 							else if (map.CHIP[map.stage][y][x] == 14) {
-								startX[i + 1] = endX[i] - 1;
-								startY[i + 1] = endY[i] - 1;
-								angle[i + 1] = atan2(32, 32) + (atan2(32, 32) - angle[i]);
+								//下
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y + 32, 32 * x + 32, 32 * y + 32)) {
+									startX[i + 1] = endX[i];
+									startY[i + 1] = endY[i] + 1;
+									angle[i + 1] = atan2(0, 32) + (atan2(0, 32) - angle[i]);
+									}
+								//右
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x + 32, 32 * y, 32 * x + 32, 32 * y + 32)) {
+									startX[i + 1] = endX[i] + 1;
+									startY[i + 1] = endY[i];
+									angle[i + 1] = atan2(32, 0) + (atan2(32, 0) - angle[i]);
+									}
+								//斜め
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y + 32, 32 * x + 32, 32 * y)) {
+									startX[i + 1] = endX[i] - 1;
+									startY[i + 1] = endY[i] - 1;
+									angle[i + 1] = atan2(32, 32) + (atan2(32, 32) - angle[i]);
+									}
 								}
+
 							else if (map.CHIP[map.stage][y][x] == 15) {
-								startX[i + 1] = endX[i] + 1;
-								startY[i + 1] = endY[i] - 1;
-								angle[i + 1] = atan2(-32, 32) + (atan2(-32, 32) - angle[i]);
+								//下
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y + 32, 32 * x + 32, 32 * y + 32)) {
+									startX[i + 1] = endX[i];
+									startY[i + 1] = endY[i] + 1;
+									angle[i + 1] = atan2(0, 32) + (atan2(0, 32) - angle[i]);
+									}
+								//左
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x, 32 * y, 32 * x, 32 * y + 32)) {
+									startX[i + 1] = endX[i] - 1;
+									startY[i + 1] = endY[i];
+									angle[i + 1] = atan2(32, 0) + (atan2(32, 0) - angle[i]);
+									}
+								//斜め
+								if (LineLine(startX[i], startY[i], &endX[i], &endY[i], 32 * x + 32, 32 * y + 32, 32 * x, 32 * y)) {
+									startX[i + 1] = endX[i] + 1;
+									startY[i + 1] = endY[i] - 1;
+									angle[i + 1] = atan2(-32, 32) + (atan2(-32, 32) - angle[i]);
+									}
 								}
 							}
 						}
@@ -300,7 +366,7 @@ void Laser::Angle(XINPUT_STATE pad, XINPUT_STATE padOld, TransForm player) {//開
 	}
 
 void Laser::Draw() {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 100);
 	for (int i = 0; i < max; i++) {
 		if (isDraw[i] == 1) {
 			DrawLineAA(startX[i], startY[i], endX[i], endY[i], colorCode, 16);

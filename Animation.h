@@ -1,5 +1,5 @@
 #pragma once
-class Animation{
+class Animation {
 public:
 	int playerFrame;
 	int playerTimer;
@@ -9,6 +9,6 @@ public:
 	int rStickTimer;
 
 	Animation();
-	void animation(int &frame, int &timer, int frameCount, int maxGraph);
-};
+	void animation(int& frame, int& timer, int frameCount, int maxGraph);
+	};
 

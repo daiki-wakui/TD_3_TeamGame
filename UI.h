@@ -8,7 +8,10 @@ public:
 
 	//画像
 	int bButtanPic[2];
+	int yButtanPic[4];
 	int rStickPic[8];
+	int colorFrameImage;
+	int pauseFontImage[4];
 	//ポーズで使う変数
 	int pauseImage;
 	int ControlImage;
@@ -34,7 +37,7 @@ public:
 	enum PlayerDirection {
 		RIGHT,
 		LEFT
-	};
+		};
 
 	Animation* anime;
 public:
@@ -43,9 +46,9 @@ public:
 	void SceneTransition();
 	void DrawFadeInOut();
 	void PauseDraw();
-	void PauseUpdate(XINPUT_STATE pad, XINPUT_STATE padOld, int& scene,int &reset);
-	void ButtonDraw(XINPUT_STATE pad, XINPUT_STATE padOld,TransForm player);
+	void PauseUpdate(XINPUT_STATE pad, XINPUT_STATE padOld, int& scene, int& reset, int& alpha, int& titleAlpha);
+	void ButtonDraw(XINPUT_STATE pad, XINPUT_STATE padOld, TransForm player);
 	void drawColorPalette(int x, int y, int* graph);
-};
+	};
 
 

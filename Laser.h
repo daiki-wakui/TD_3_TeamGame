@@ -41,16 +41,14 @@ public:
 	//•Ï”éŒ¾
 	int max;
 	int pic[3];
-	int isDraw[10];
-	float startX[10], startY[10];
-	float endX[10], endY[10];
+	int isDraw[20];
+	float startX[20], startY[20];
+	float endX[20], endY[20];
 	int color, colorCode;
 	double theta, thetaOld;
 	int isAngle;
-	double angle[10];
+	double angle[20];
 
-	int isHitX[10], isHitY[10];
-	int isOldHitX[10], isOldHitY[10];
 
 
 	Particle* particle[100];
